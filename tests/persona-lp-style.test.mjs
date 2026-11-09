@@ -9,7 +9,6 @@ test("確認用LPの新規ブロックへ専用クラスを付与する", async 
   const html = await readFile(HTML_URL, "utf8");
 
   for (const className of [
-    "persona-hero-note",
     "reality-grid",
     "time-grid",
     "independence-flow",
@@ -27,7 +26,6 @@ test("新規ブロックへ既存ブランドに沿った専用スタイルを�
   const css = await readFile(CSS_URL, "utf8");
 
   for (const selector of [
-    ".persona-hero-note",
     ".reality-grid",
     ".time-grid",
     ".independence-flow",
@@ -58,6 +56,24 @@ test("長い日本語コピーをカード内で安全に折り返す", async ()
   assert.ok(guard, "長文要素の共通ガードが存在すること");
   assert.match(guard, /min-width:\s*0/);
   assert.match(guard, /overflow-wrap:\s*anywhere/);
+});
+
+test("ヒーローの補足文をリード文と同じ書体で表示する", async () => {
+  const css = await readFile(CSS_URL, "utf8");
+  const description = css.match(/\.persona-hero\s+\.hero-description\s*\{[^}]*\}/s)?.[0];
+
+  assert.ok(description, "ヒーロー補足文の専用スタイルが存在すること");
+  assert.match(description, /font-size:\s*15px/);
+  assert.match(description, /font-weight:\s*700/);
+  assert.match(description, /line-height:\s*1\.9/);
+  assert.match(description, /color:\s*inherit/);
+
+  const mobile = css.match(/@media\s*\(max-width:\s*760px\)\s*\{[\s\S]*\}\s*$/m)?.[0];
+  assert.ok(mobile, "760pxのモバイルメディアクエリが存在すること");
+  assert.match(
+    mobile,
+    /\.persona-hero\s+\.hero-description\s*\{[^}]*font-size:\s*13px/s,
+  );
 });
 
 test("動きを減らす設定で専用アニメーションを無効化する", async () => {
