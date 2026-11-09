@@ -55,6 +55,22 @@ test("解決策が会社の外で収入を作る考え方を明示する", async
   );
 });
 
+test("目指す姿の月20万円訴求にも非保証注記を近接表示する", async () => {
+  const html = await readPersonaLp();
+  const vision = sectionById(html, "vision");
+
+  assert.ok(vision, "目指す姿セクションが存在すること");
+  const incomeCard = [...vision.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)]
+    .map(([article]) => article)
+    .find((article) => article.includes("毎月20万円の選択肢を、自分と家族のために増やす"));
+
+  assert.ok(incomeCard, "月20万円を訴求するカードが存在すること");
+  assert.match(
+    visibleText(incomeCard),
+    /支援後に目指す目標であり、成果を保証するものではありません/,
+  );
+});
+
 test("3か月の支援と4か月目以降の自走を区別して示す", async () => {
   const html = await readPersonaLp();
   const program = sectionById(html, "program");
