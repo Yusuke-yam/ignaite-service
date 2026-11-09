@@ -1,1 +1,560 @@
-/* Persona-specific responsive styles are added in Task 3. */
+/* Persona-led local variant. Existing shared styles remain untouched. */
+.persona-page {
+  background: #fff;
+}
+
+.persona-page :where(h1, h2, h3, p, li, dd, strong, span) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.persona-hero {
+  min-height: 780px;
+  grid-template-columns: minmax(0, 64%) minmax(280px, 36%);
+}
+
+.persona-hero .hero-audience {
+  max-width: 670px;
+  margin-bottom: 24px;
+  padding: 0 0 0 18px;
+  transform: none;
+  background: transparent;
+  border-left: 5px solid #fee21c;
+  color: var(--navy);
+  font-size: clamp(17px, 1.8vw, 24px);
+  line-height: 1.7;
+  font-weight: 900;
+}
+
+.persona-hero h1 {
+  max-width: 850px;
+  font-size: clamp(30px, 3.35vw, 48px);
+  line-height: 1.68;
+}
+
+.persona-hero h1 .hero-line,
+.persona-hero h1 .hero-line:first-child {
+  font-size: 1em;
+  font-weight: 900;
+}
+
+.persona-hero .number {
+  font-size: 1.34em;
+  margin-right: 5px;
+}
+
+.persona-hero-note {
+  max-width: 710px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #cfd8e6;
+  color: #596477;
+  line-height: 1.75;
+}
+
+.reality {
+  background: #fff;
+}
+
+.reality-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.reality-card {
+  position: relative;
+  overflow: hidden;
+  padding: 36px;
+  border: 1px solid #dfe6ef;
+  border-radius: 24px;
+  background: #f7f9fc;
+  box-shadow: 0 14px 34px #0227690d;
+}
+
+.reality-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  background: var(--gold);
+}
+
+.reality-card-money {
+  background: var(--navy);
+  color: #fff;
+}
+
+.reality-card .small-label {
+  margin-bottom: 18px;
+  color: #9b7213;
+  font-weight: 700;
+}
+
+.reality-card-money .small-label {
+  color: #fee21c;
+}
+
+.reality-card h3 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  line-height: 1.55;
+  font-weight: 900;
+}
+
+.reality-card-money h3 {
+  color: #fff;
+}
+
+.reality-card p {
+  color: #566174;
+  font-size: 14px;
+  line-height: 2;
+}
+
+.reality-card p + p {
+  margin-top: 14px;
+}
+
+.reality-card-money p {
+  color: #dce6f6;
+}
+
+.persona-vision .section-lead {
+  max-width: 760px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.persona-outcomes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.persona-outcomes article,
+.persona-outcomes article:last-child {
+  height: 100%;
+  margin: 0;
+  align-items: flex-start;
+}
+
+.persona-outcomes h3 {
+  line-height: 1.7;
+}
+
+.value-translation {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 36px;
+  align-items: center;
+  margin-top: 48px;
+  padding: 38px;
+  border-radius: 24px;
+  background: #f2f5fa;
+}
+
+.value-translation-copy .eyebrow {
+  margin-bottom: 12px;
+}
+
+.value-translation-copy h3 {
+  margin-bottom: 14px;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.value-translation-copy > p:last-child {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.value-grid p {
+  padding: 18px;
+  border: 1px solid #dfe6ef;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.value-grid p::before {
+  content: "✓";
+  margin-right: 9px;
+  color: #d49a00;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.time-grid article {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border: 1px solid #dfe6ef;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.time-grid span {
+  flex: 0 0 auto;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: #fee21c;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.time-grid strong {
+  color: var(--navy);
+  font-size: 14px;
+}
+
+.persona-program .roadmap {
+  align-items: stretch;
+}
+
+.persona-program .month h3 {
+  min-height: 76px;
+  font-size: 20px;
+  line-height: 1.65;
+}
+
+.independence-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.independence-flow article {
+  height: 100%;
+  padding: 26px;
+  border: 1px solid #b8c9e0;
+  border-radius: 18px;
+  background: #ffffffd9;
+}
+
+.independence-flow article:last-child {
+  border-color: #e3bd2a;
+  background: #fffbea;
+}
+
+.independence-flow span {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #825f0d;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.independence-flow h3 {
+  margin-bottom: 8px;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.independence-flow p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.independence-flow i {
+  color: var(--navy);
+  font-style: normal;
+  font-size: 26px;
+}
+
+.independence-goal {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  gap: 28px;
+  align-items: center;
+  margin-top: 20px;
+  padding: 30px 34px;
+  border: 2px solid #fee21c;
+  border-radius: 22px;
+  background: var(--navy);
+  color: #fff;
+}
+
+.independence-goal .goal-label {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #fee21c;
+}
+
+.independence-goal > div > p {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.independence-goal > div > p span {
+  margin: 0 4px;
+  color: #fee21c;
+  font-family: var(--en);
+  font-size: 42px;
+}
+
+.independence-goal .fine {
+  color: #dce6f6;
+}
+
+.persona-support {
+  align-items: center;
+}
+
+.persona-support > p {
+  max-width: 460px;
+}
+
+.model-section {
+  background: #fff;
+}
+
+.model-case {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  gap: 28px 44px;
+  align-items: center;
+  padding: 48px;
+  border-radius: 28px;
+  background: var(--navy);
+  box-shadow: 0 20px 50px #02276926;
+  color: #fff;
+}
+
+.model-case .eyebrow {
+  margin-bottom: 12px;
+  color: #fee21c;
+}
+
+.model-case h2 {
+  margin-bottom: 18px;
+  color: #fff;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 900;
+}
+
+.model-case-copy > p:last-child {
+  color: #dce6f6;
+  font-size: 13px;
+}
+
+.model-case-numbers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.model-case-numbers p {
+  padding: 22px 10px;
+  border: 1px solid #ffffff29;
+  border-radius: 16px;
+  background: #ffffff0d;
+  text-align: center;
+}
+
+.model-case-numbers strong {
+  display: block;
+  color: #fee21c;
+  font: 800 46px/1 var(--en);
+}
+
+.model-case-numbers span {
+  display: block;
+  margin-top: 9px;
+  color: #e8eef8;
+  font-size: 11px;
+}
+
+.model-case-statement {
+  grid-column: 1 / -1;
+  padding-top: 26px;
+  border-top: 1px solid #ffffff29;
+  text-align: center;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.model-case > .fine {
+  grid-column: 1 / -1;
+  margin-top: -18px;
+  color: #cfdbee;
+  text-align: center;
+}
+
+@media (max-width: 1100px) {
+  .persona-hero {
+    grid-template-columns: minmax(0, 68%) minmax(250px, 32%);
+  }
+
+  .persona-hero h1 {
+    font-size: 36px;
+  }
+
+  .persona-outcomes {
+    grid-template-columns: 1fr;
+  }
+
+  .persona-program .month h3 {
+    min-height: 108px;
+  }
+}
+
+@media (max-width: 760px) {
+  .persona-hero {
+    min-height: 0;
+  }
+
+  .persona-hero .hero-audience {
+    max-width: none;
+    margin-bottom: 18px;
+    padding-left: 12px;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .persona-hero h1 {
+    font-size: clamp(25px, 7vw, 36px);
+    line-height: 1.62;
+  }
+
+  .persona-hero .number {
+    font-size: 1.24em;
+  }
+
+  .persona-hero-note {
+    margin-top: 14px;
+    padding-top: 12px;
+    font-size: 9px;
+  }
+
+  .reality-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reality-card {
+    padding: 28px 22px;
+    border-radius: 20px;
+  }
+
+  .reality-card h3 {
+    font-size: 21px;
+  }
+
+  .reality-card p {
+    font-size: 13px;
+  }
+
+  .persona-outcomes {
+    grid-template-columns: 1fr;
+  }
+
+  .value-translation {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 32px;
+    padding: 26px 20px;
+  }
+
+  .value-translation-copy h3 {
+    font-size: 19px;
+  }
+
+  .value-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .time-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .persona-program .month h3 {
+    min-height: 0;
+    font-size: 20px;
+  }
+
+  .independence-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .independence-flow i {
+    transform: rotate(90deg);
+    text-align: center;
+  }
+
+  .independence-goal {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 26px 20px;
+    text-align: center;
+  }
+
+  .independence-goal > div > p {
+    font-size: 18px;
+  }
+
+  .independence-goal > div > p span {
+    font-size: 36px;
+  }
+
+  .model-case {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 32px 20px;
+    border-radius: 22px;
+  }
+
+  .model-case-copy {
+    text-align: center;
+  }
+
+  .model-case-numbers {
+    grid-template-columns: 1fr;
+  }
+
+  .model-case-numbers p {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .model-case-numbers strong,
+  .model-case-numbers span {
+    display: inline;
+    margin: 0;
+  }
+
+  .model-case-statement {
+    padding-top: 22px;
+    font-size: 17px;
+  }
+
+  .model-case > .fine {
+    margin-top: -12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .persona-page * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
