@@ -165,6 +165,14 @@ test("3か月の支援と4か月目以降の自走を区別して示す", async 
   );
 });
 
+test("3か月の支援カードに補助タグ行を表示しない", async () => {
+  const html = await readPersonaLp();
+  const program = sectionById(html, "program");
+
+  assert.ok(program, "3か月の支援セクションが存在すること");
+  assert.doesNotMatch(program, /class=["'][^"']*month-foot[^"']*["']/);
+});
+
 test("プロフィール・お客様の声・無料相談を指定内容に整理する", async () => {
   const html = await readPersonaLp();
   const profile = sectionById(html, "profile");

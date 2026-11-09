@@ -6,6 +6,7 @@ const DIST_URL = new URL("../dist/", import.meta.url);
 const PERSONA_LP_URL = new URL("persona-lp.html", DIST_URL);
 const PERSONA_CSS_URL = new URL("persona-lp.css", DIST_URL);
 const VERCEL_CONFIG_URL = new URL("../vercel.json", import.meta.url);
+const GITIGNORE_URL = new URL("../.gitignore", import.meta.url);
 const LINE_URL = "https://lin.ee/pGwZL03";
 const PROFILE_URL = "https://yusuke-yamamoto-profile.abc77cba77.chatgpt.site";
 
@@ -112,14 +113,18 @@ test("スマホ表示では主要見出しを意味の区切りで改行する",
   );
 });
 
-test("本番ルートで確認用LPを表示し旧LPファイルは保持する", async () => {
-  const config = JSON.parse(await readFile(VERCEL_CONFIG_URL, "utf8"));
+test("本番ルート用の専用出力を生成し旧LPを保持する", async () => {
+  const [configSource, gitignore, legacyLp, personaLp] = await Promise.all([
+    readFile(VERCEL_CONFIG_URL, "utf8"),
+    readFile(GITIGNORE_URL, "utf8"),
+    readFile(new URL("index.html", DIST_URL), "utf8"),
+    readPersonaLp(),
+  ]);
+  const config = JSON.parse(configSource);
 
-  assert.ok(
-    config.rewrites?.some(
-      ({ source, destination }) => source === "/" && destination === "/persona-lp.html",
-    ),
-    "本番ルートをpersona-lp.htmlへ向けること",
-  );
-  await access(new URL("index.html", DIST_URL));
+  assert.equal(config.buildCommand, "node scripts/prepare-deploy.mjs");
+  assert.equal(config.outputDirectory, "deploy");
+  assert.equal(config.rewrites, undefined);
+  assert.match(gitignore, /^deploy\/$/m, "生成したデプロイ出力をGit管理から除外すること");
+  assert.notEqual(legacyLp, personaLp, "旧LPと確認用LPを別ファイルで保持すること");
 });
