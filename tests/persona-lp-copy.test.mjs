@@ -24,7 +24,12 @@ function sectionById(html, id) {
 }
 
 function blockByClass(html, className) {
-  return html.match(new RegExp(`<[^>]+class=["'][^"']*\\b${className}\\b[^"']*["'][^>]*>[\\s\\S]*?<\\/[^>]+>`, "i"))?.[0];
+  return html.match(
+    new RegExp(
+      `<([a-z][a-z0-9]*)\\b[^>]*class=["'][^"']*\\b${className}\\b[^"']*["'][^>]*>[\\s\\S]*?<\\/\\1>`,
+      "i",
+    ),
+  )?.[0];
 }
 
 test("ファーストビューが対象者の現実と目標を具体的に示す", async () => {
@@ -96,4 +101,35 @@ test("抽象的な旧見出しと内部フレーム名を表向きに表示し�
   assert.doesNotMatch(text, /実務代行/);
   assert.doesNotMatch(text, /講師・研修/);
   assert.doesNotMatch(html, /<li[^>]*>\s*コーチング\s*<\/li>/);
+});
+
+test("確認用LPが必要なセクションと見出し階層を持つ", async () => {
+  const html = await readPersonaLp();
+
+  for (const id of [
+    "reality",
+    "vision",
+    "program",
+    "model",
+    "profile",
+    "voices",
+    "consultation",
+  ]) {
+    assert.ok(sectionById(html, id), `#${id} セクションが存在すること`);
+  }
+
+  assert.equal((html.match(/<h1\b/gi) ?? []).length, 1, "h1は1件だけであること");
+  assert.ok((html.match(/<h2\b/gi) ?? []).length >= 6, "主要セクションにh2があること");
+});
+
+test("既存スタイルの後に専用スタイルを読み込み既存スクリプトを再利用する", async () => {
+  const html = await readPersonaLp();
+  const styleIndex = html.indexOf('href="style.css"');
+  const themeIndex = html.indexOf('href="reference-theme.css"');
+  const personaIndex = html.indexOf('href="persona-lp.css"');
+
+  assert.ok(styleIndex >= 0, "style.cssを読み込むこと");
+  assert.ok(themeIndex > styleIndex, "reference-theme.cssをstyle.cssの後に読み込むこと");
+  assert.ok(personaIndex > themeIndex, "persona-lp.cssを既存CSSの後に読み込むこと");
+  assert.match(html, /<script\b[^>]*src=["']script\.js["'][^>]*defer[^>]*>/i);
 });
