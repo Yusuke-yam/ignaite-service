@@ -10,9 +10,7 @@ test("確認用LPの新規ブロックへ専用クラスを付与する", async 
 
   for (const className of [
     "reality-grid",
-    "time-grid",
     "independence-flow",
-    "model-case",
   ]) {
     assert.match(
       html,
@@ -27,9 +25,7 @@ test("新規ブロックへ既存ブランドに沿った専用スタイルを�
 
   for (const selector of [
     ".reality-grid",
-    ".time-grid",
     ".independence-flow",
-    ".model-case",
   ]) {
     assert.match(css, new RegExp(`\\${selector}\\s*\\{`), `${selector}の規則があること`);
   }
@@ -40,13 +36,31 @@ test("760px以下で新規グリッドを1列にする", async () => {
   const mobile = css.match(/@media\s*\(max-width:\s*760px\)\s*\{[\s\S]*\}\s*$/m)?.[0];
 
   assert.ok(mobile, "760pxのモバイルメディアクエリが存在すること");
-  for (const selector of [".reality-grid", ".time-grid", ".model-case-numbers"]) {
+  for (const selector of [".reality-grid"]) {
     assert.match(
       mobile,
       new RegExp(`\\${selector}\\s*\\{[^}]*grid-template-columns:\\s*1fr`, "s"),
       `${selector}を1列にすること`,
     );
   }
+});
+
+test("削除した時間帯カードとモデルカードの専用スタイルを残さない", async () => {
+  const css = await readFile(CSS_URL, "utf8");
+
+  assert.doesNotMatch(css, /\.time-grid\b/);
+  assert.doesNotMatch(css, /\.model-(?:section|case)\b/);
+});
+
+test("スマホの仕事現実カード本文を指定3行の幅に収める", async () => {
+  const css = await readFile(CSS_URL, "utf8");
+  const mobile = css.match(/@media\s*\(max-width:\s*760px\)\s*\{[\s\S]*\}\s*$/m)?.[0];
+
+  assert.ok(mobile, "760pxのモバイルメディアクエリが存在すること");
+  assert.match(
+    mobile,
+    /\.reality-card\.reality-card-work\s*>\s*p\s*\{[^}]*font-size:\s*min\(13px,\s*2\.75vw\)/s,
+  );
 });
 
 test("長い日本語コピーをカード内で安全に折り返す", async () => {

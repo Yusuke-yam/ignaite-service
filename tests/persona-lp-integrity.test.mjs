@@ -36,7 +36,7 @@ test("LINEとプロフィールの外部リンクを安全な属性で開く", a
 
   for (const anchor of lineAnchors) {
     const visibleText = anchor.replace(/<[^>]+>/g, "").replace(/\s+/g, "");
-    assert.match(visibleText, /【無料】LINEから今すぐ相談/);
+    assert.match(visibleText, /【無料】LINEで今すぐ相談/);
   }
 });
 
@@ -84,12 +84,8 @@ test("スマホ表示では主要見出しを意味の区切りで改行する",
   ]);
 
   for (const phrase of [
-    "役職に就いて",
     "会社の評価制度は",
-    "売れるスキルと",
     "4ヶ月目には独り立ちし",
-    "【無料】今の仕事を",
-    "副収入を得る方法を",
   ]) {
     assert.match(
       html,
@@ -98,10 +94,43 @@ test("スマホ表示では主要見出しを意味の区切りで改行する",
     );
   }
 
+  assert.match(
+    html,
+    /class=["']mobile-line["'][^>]*>役職に就いて年収も上がった。<\/span><br class=["']mobile-break["']\s*\/><span class=["']mobile-line["']>でも手元に残るお金は増えていない。/,
+  );
+  assert.match(
+    html,
+    />リーダー職や主任を任され仕事の責任範囲は広がった。<\/span><br class=["']mobile-break["']\s*\/><span class=["']mobile-line["']>次の大きな昇進・昇給はしばらく先なのも見えている。<\/span><br class=["']mobile-break["']\s*\/><span class=["']mobile-line["']>でも正直、大企業の役職と安定は手放せない。/,
+  );
+  assert.match(
+    html,
+    /会社員として積み重ねた経験を、<br class=["']mobile-break["']\s*\/>会社の外で対価を得られるサービスへ変える。/,
+  );
+  assert.match(
+    html,
+    /class=["']mobile-line["'][^>]*>仕事で当たり前にやっていることが、<\/span><br class=["']mobile-break["']\s*\/><span class=["']mobile-line["']>会社の外で重宝され収益化できます。/,
+  );
+  assert.match(
+    html,
+    /月<span>20<\/span>時間の副業で、<br class=["']mobile-break["']\s*\/>月<span>20<\/span>万円。/,
+  );
+  assert.match(
+    html,
+    /class=["'][^"']*consultation-heading[^"']*["'][^>]*><span class=["']mobile-line["']>【無料】あなたの仕事経験を<\/span><br class=["']mobile-break["']\s*\/><span class=["']mobile-line["']>活かせる副業を見つける<\/span>/,
+  );
+
   assert.match(css, /\.mobile-break\s*\{[^}]*display:\s*none;/s);
   assert.match(
     css,
+    /@media\s*\(max-width:\s*760px\)[\s\S]*?\.mobile-line\s*\{[^}]*white-space:\s*nowrap;/,
+  );
+  assert.match(
+    css,
     /@media\s*\(max-width:\s*760px\)[\s\S]*?\.mobile-break\s*\{[^}]*display:\s*block;/,
+  );
+  assert.match(
+    css,
+    /@media\s*\(max-width:\s*760px\)[\s\S]*?\.closing\s+\.consultation-heading\s*\{[^}]*font-size:\s*min\(25px,\s*calc\(\(100vw\s*-\s*72px\)\s*\/\s*13\)\);/,
   );
   assert.match(
     css,

@@ -39,14 +39,13 @@ test("ファーストビューが対象者の現実と目標を具体的に示�
   assert.ok(hero, "ヒーローセクションが存在すること");
   const text = visibleText(hero);
 
-  assert.match(
+  assert.doesNotMatch(
     text,
     /今の会社で役職に就いて、年収も800万円はある。それでも手元に残るのは数万円だけ。/,
   );
-  assert.match(
-    text,
-    /今の会社は続けたまま、会社員の経験を副業に活かし月20時間で月20万円の副収入を目指す/,
-  );
+  assert.doesNotMatch(hero, /class=["'][^"']*hero-audience[^"']*["']/);
+  assert.doesNotMatch(text, /今の会社は続けたまま、/);
+  assert.match(text, /会社員の経験を副業に活かし月20時間で月20万円の副収入を目指す/);
   assert.match(
     text,
     /出勤前や夕食後、そして休日の朝などに1時間だけ使って毎月20時間だけ。/,
@@ -65,13 +64,14 @@ test("現状セクションが役職者の仕事と家計の本音を具体的�
   const text = visibleText(reality);
 
   assert.match(text, /役職に就いて年収も上がった。でも手元に残るお金は増えていない。/);
+  assert.match(text, /責任は広がり仕事も増えた。でも、近々給与は大きくは変わらない。/);
   assert.match(
     text,
-    /リーダー職や主任を任され仕事の責任範囲は広がった。そして次の大きな昇進・昇給はしばらく先なのが見えていて嫌気がさす。でも正直、大企業の役職と安定は手放せない。/,
+    /リーダー職や主任を任され仕事の責任範囲は広がった。次の大きな昇進・昇給はしばらく先なのも見えている。でも正直、大企業の役職と安定は手放せない。/,
   );
   assert.match(
     text,
-    /年収800万円でも手取りだと約40万円前後。出費を差し引くと、自由に使えるのは月数万円程度。/,
+    /年収800万円でも手取りは月40万円。結局、自由に使えるのは月数万円だけ。/,
   );
   assert.match(
     text,
@@ -108,10 +108,16 @@ test("解決策が会社の外で収入を作る考え方を明示する", async
     text,
     /仕事用スーツをオーダーメイドで新調、子どもを私立に通わせる教育費を貯めるなどして、お金を理由に将来の選択肢を諦めない状態を目指します。/,
   );
+  assert.doesNotMatch(
+    text,
+    /※月20万円は支援後に目指す目標であり、成果を保証するものではありません。/,
+  );
+  assert.doesNotMatch(text, /TRANSLATE YOUR EXPERIENCE/);
   assert.match(
     text,
-    /あなたが仕事で当たり前にしていることが、会社の外で重宝され収益化されます。/,
+    /仕事で当たり前にやっていることが、会社の外で重宝され収益化できます。/,
   );
+  assert.doesNotMatch(vision, /class=["'][^"']*\btime-grid\b[^"']*["']/);
 
   for (const value of [
     "業務コンサルをする",
@@ -123,7 +129,7 @@ test("解決策が会社の外で収入を作る考え方を明示する", async
   }
 });
 
-test("目指す姿の月20万円訴求にも非保証注記を近接表示する", async () => {
+test("目指す姿の月20万円訴求から指定の非保証注記を除去する", async () => {
   const html = await readPersonaLp();
   const vision = sectionById(html, "vision");
 
@@ -135,7 +141,7 @@ test("目指す姿の月20万円訴求にも非保証注記を近接表示する
     );
 
   assert.ok(incomeCard, "月20万円を訴求するカードが存在すること");
-  assert.match(
+  assert.doesNotMatch(
     visibleText(incomeCard),
     /支援後に目指す目標であり、成果を保証するものではありません/,
   );
@@ -148,13 +154,18 @@ test("3か月の支援と4か月目以降の自走を区別して示す", async 
   assert.ok(program, "3か月の支援セクションが存在すること");
   const text = visibleText(program);
 
-  assert.match(text, /1か月目：売れるスキルと取り組む副業を決める/);
-  assert.match(text, /2か月目：最初の案件を獲得する/);
+  assert.doesNotMatch(
+    text,
+    /副業未経験でも、何を決め、何を実行するのかを毎月明確にします。/,
+  );
+  assert.match(text, /1ヶ月目取り組む副業を見つける/);
+  assert.match(text, /2ヶ月目最初の案件を獲得する/);
   assert.match(
     text,
     /プロフィール作成、応募文面作成、案件応募の見極めなども丁寧にサポートして案件獲得を目指します。/,
   );
-  assert.match(text, /3か月目：案件を実行して初収益を得る/);
+  assert.match(text, /3ヶ月目案件を実行して初収益を得る/);
+  assert.doesNotMatch(text, /MONTH0[1-3]|[123]か月目：/);
   assert.match(
     text,
     /案件を受注したら、これまでのスキルを活かして実行していきます。生成AIも活用して業務効率化しながら本業の負担にならずに最初の収益化を目指します。/,
@@ -180,6 +191,11 @@ test("プロフィール・お客様の声・無料相談を指定内容に整�
   const consultation = sectionById(html, "consultation");
 
   assert.ok(profile, "プロフィールセクションが存在すること");
+  assert.match(visibleText(profile), /伴走するコーチの紹介/);
+  assert.doesNotMatch(
+    visibleText(profile),
+    /会社員・マネジメント・副業の実践経験と、認知科学コーチングを掛け合わせて伴走します。/,
+  );
   assert.match(visibleText(profile), /コーチングカンパニー/);
   assert.doesNotMatch(visibleText(profile), /Certification|日本認知科学コーチング協会認定プロ認知科学コーチ/);
 
@@ -194,8 +210,10 @@ test("プロフィール・お客様の声・無料相談を指定内容に整�
   assert.ok(consultation, "無料相談セクションが存在すること");
   assert.match(
     visibleText(consultation),
-    /【無料】今の仕事を続けたまま、仕事の経験をそのまま活かして副収入を得る方法を見つける/,
+    /【無料】あなたの仕事経験を活かせる副業を見つける/,
   );
+  assert.doesNotMatch(visibleText(html), /【無料】LINEから今すぐ相談/);
+  assert.match(visibleText(html), /【無料】LINEで今すぐ相談/);
 
   assert.doesNotMatch(html, /class=["'][^"']*\bmobile-cta\b[^"']*["']/);
 });
@@ -212,16 +230,12 @@ test("支援後の収益目標を非保証注記と近接表示する", async ()
   assert.match(text, /目標であり、成果を保証するものではありません/);
 });
 
-test("4案件・月22時間・月25万円をモデルケースとして表示する", async () => {
+test("目指す働き方のモデルカードを表示しない", async () => {
   const html = await readPersonaLp();
   const model = sectionById(html, "model");
 
-  assert.ok(model, "モデルケースセクションが存在すること");
-  const text = visibleText(model);
-
-  assert.match(text, /目指す働き方のモデル/);
-  assert.match(text, /4件の継続案件を月22時間で担当し、月25万円の副収入へ。/);
-  assert.match(text, /支援後に目指すモデルケースであり、実際の成果や達成を保証するものではありません/);
+  assert.equal(model, undefined);
+  assert.doesNotMatch(visibleText(html), /目指す働き方のモデル/);
 });
 
 test("抽象的な旧見出しを表示しない", async () => {
@@ -242,6 +256,7 @@ test("英語のセクションラベルを表示しない", async () => {
     "COACH PROFILE",
     "CLIENT VOICES",
     "YOUR NEXT STEP",
+    "TRANSLATE YOUR EXPERIENCE",
   ]) {
     assert.doesNotMatch(text, new RegExp(label.replace(/\s+/g, "")));
   }
@@ -254,7 +269,6 @@ test("確認用LPが必要なセクションと見出し階層を持つ", async 
     "reality",
     "vision",
     "program",
-    "model",
     "profile",
     "voices",
     "consultation",
@@ -263,7 +277,7 @@ test("確認用LPが必要なセクションと見出し階層を持つ", async 
   }
 
   assert.equal((html.match(/<h1\b/gi) ?? []).length, 1, "h1は1件だけであること");
-  assert.ok((html.match(/<h2\b/gi) ?? []).length >= 6, "主要セクションにh2があること");
+  assert.ok((html.match(/<h2\b/gi) ?? []).length >= 5, "主要セクションにh2があること");
 });
 
 test("既存スタイルの後に専用スタイルを読み込み既存スクリプトを再利用する", async () => {
