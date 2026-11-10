@@ -116,7 +116,7 @@ test("スマホ表示では主要見出しを意味の区切りで改行する",
   );
   assert.match(
     html,
-    /class=["'][^"']*consultation-heading[^"']*["'][^>]*><span class=["']mobile-line["']>【無料】あなたの仕事経験を<\/span><br class=["']mobile-break["']\s*\/><span class=["']mobile-line["']>活かせる副業を見つける<\/span>/,
+    /class=["'][^"']*consultation-heading[^"']*["'][^>]*>【無料】自分に合う副業を見つける<\/h2>/,
   );
 
   assert.match(css, /\.mobile-break\s*\{[^}]*display:\s*none;/s);
@@ -128,10 +128,7 @@ test("スマホ表示では主要見出しを意味の区切りで改行する",
     css,
     /@media\s*\(max-width:\s*760px\)[\s\S]*?\.mobile-break\s*\{[^}]*display:\s*block;/,
   );
-  assert.match(
-    css,
-    /@media\s*\(max-width:\s*760px\)[\s\S]*?\.closing\s+\.consultation-heading\s*\{[^}]*font-size:\s*min\(25px,\s*calc\(\(100vw\s*-\s*72px\)\s*\/\s*13\)\);/,
-  );
+  assert.doesNotMatch(css, /\.closing\s+\.consultation-heading\s*\{/);
   assert.match(
     css,
     /\.persona-program\s+\.month\s+h3\s+\.mobile-break\s*\{[^}]*display:\s*block;/s,

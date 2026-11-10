@@ -210,7 +210,7 @@ test("プロフィール・お客様の声・無料相談を指定内容に整�
   assert.ok(consultation, "無料相談セクションが存在すること");
   assert.match(
     visibleText(consultation),
-    /【無料】あなたの仕事経験を活かせる副業を見つける/,
+    /【無料】自分に合う副業を見つける/,
   );
   assert.doesNotMatch(visibleText(html), /【無料】LINEから今すぐ相談/);
   assert.match(visibleText(html), /【無料】LINEで今すぐ相談/);

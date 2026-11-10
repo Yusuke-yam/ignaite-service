@@ -371,10 +371,6 @@
     font-size: min(19px, calc((100vw - 80px) / 17));
   }
 
-  .closing .consultation-heading {
-    font-size: min(25px, calc((100vw - 72px) / 13));
-  }
-
   .value-grid {
     grid-template-columns: 1fr;
   }
